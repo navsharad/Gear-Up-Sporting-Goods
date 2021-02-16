@@ -8,46 +8,73 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {AddShoppingCart, Add, Remove} from '@material-ui/icons';
+import {Grid, IconButton} from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    maxWidth: 450,
+    padding: theme.spacing(2),
+    textAlign: 'center'
   },
   media: {
-    height: 140,
+    height: 350,
+    backgroundSize: 'contain',
   },
-});
+  cardActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#f0f0f0',
+  },
+  shoppingCart: {
+    display: 'flex',
+    justifySelf: 'flex-end',
+  }
+  
+}));
 
-const Product = ({item}) => {
+const Product = ({item, add}) => {
   const classes = useStyles();
-
   const [quantity, setQuantity] = useState(1);
 
+  // strip html tags from api response
+  const desc = item.description.replace(/(<([^>]+)>)/gi, "");
+
+console.log(item)
   return (
+    <Grid item xs={12} md={6} lg={4}>
     <Card className={classes.root}>
-      <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={item.image}
-          title={item.title}
+          image={item.media.source}
+          title={item.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {item.title}
+            {item.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {item.description}
+            {desc}
+          </Typography>
+          <Typography variant="h6" color="textSecondary" component="p">
+            {item.price.formatted_with_symbol}
           </Typography>
         </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Remove />
+      <CardActions className={classes.cardActions}>
+        <div>
+        <IconButton onClick={() =>  quantity > 1 && setQuantity(quantity - 1)}>
+          <Remove />
+        </IconButton>
         {quantity}
-        <Add />
-        <AddShoppingCart />
-
+        <IconButton onClick={() => setQuantity(quantity + 1)}>
+          <Add />
+        </IconButton>
+        </div>
+        <IconButton className={classes.shoppingCart} onClick={() => add(item.id, quantity)}>
+          <AddShoppingCart />
+        </IconButton>
       </CardActions>
     </Card>
+    </Grid>
   );
 }
 

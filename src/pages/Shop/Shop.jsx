@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Products from '../../components/Products/Products';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const Shop = () => {
+  // fix prop drilling w/ context
+
+const Shop = ({products, add}) => {
     return (
-        // <Products />
-        <div></div>
+        <Products products={products} add={add}/>
     )
 }
 

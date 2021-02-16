@@ -8,8 +8,10 @@ import videoBackground from '../../assets/homeBackground.mp4';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+    // gives background video a darker tint
+    document.body.style = 'background-color: black';
     return (
-        <main>
+        <main className="main">
             <video src={videoBackground} muted loop autoPlay width="500" height="500"></video>
 
             <div className="content">

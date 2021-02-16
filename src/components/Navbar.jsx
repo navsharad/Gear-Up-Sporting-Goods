@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
     background: '#ffa3b1',
-    width: '100vw',
+    width: '100%',
   },
   appBar: {
     background: '#afb9ba',
@@ -26,20 +26,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar({items}) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar className={classes.title}>
-            <Link to="/">
+            <Link to="/shop">
                 <img src={logo} alt="simplicity"></img>
             </Link>
 
             <Link to="/cart">
                 <IconButton>
-                  <Badge color="secondary" badgeContent="3">
+                  <Badge color="secondary" badgeContent={items}>
                   <ShoppingCart fontSize="large" style={{color: 'white'}}/>
                   </Badge>
                 </IconButton>

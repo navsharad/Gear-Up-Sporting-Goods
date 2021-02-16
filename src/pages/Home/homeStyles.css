@@ -23,10 +23,6 @@ video {
     opacity: 0.5;
 }
 
-/* gives video background a dark tint */
-body {
-    background-color: black;
-}
 
 .content {
     display: flex;
