@@ -10,7 +10,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100wv',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        background: '#C9D6FF',
+        background: '-webkit-linear-gradient(to right, #E2E2E2, #C9D6FF)',
+        background: 'linear-gradient(to right, #E2E2E2, #C9D6FF)',
     },
     grid: {
         width: '100%',
@@ -23,6 +25,7 @@ const Products = ({products, add}) => {
 
     return (
         <div className={classes.root}>
+            
         <Grid container spacing={8} alignItems='center' className={classes.grid}>
             {products.map((item) => <Product key={item.id} item={item} add={add}/>)}
       </Grid>

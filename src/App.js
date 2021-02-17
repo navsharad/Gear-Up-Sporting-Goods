@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Navbar from './components/Navbar';
+import Loading from './components/Loading';
 import Home from './pages/Home/Home';
 import Shop from './pages/Shop/Shop';
 import Cart from './pages/Cart/Cart';
@@ -10,7 +11,7 @@ import commerce from './lib/Commerce';
 
 const App = () => {
     let [products, setProducts] = useState([]);
-    let [cart, setCart] = useState([]);
+    let [cart, setCart] = useState(0);
 
     const fetchProducts = async () => {
         const res = await commerce.products.list();
@@ -47,7 +48,9 @@ const App = () => {
         fetchCart();
     }, [])
 
-    if(!cart) return 'Loading...';
+
+    if(!cart) return <Loading />;
+    
 
     return (
     

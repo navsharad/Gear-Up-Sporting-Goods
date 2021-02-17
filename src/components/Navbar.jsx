@@ -1,12 +1,12 @@
 import React from 'react';
-import logo from '../assets/logo.png';
+import logo from '../assets/altLogo.png';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import { ShoppingCart } from '@material-ui/icons';
-import { Badge, IconButton, Button } from '@material-ui/core';
+import { Badge, IconButton } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   appBar: {
-    background: '#afb9ba',
+    background: 'black',
     height: '14vh',
   },
 

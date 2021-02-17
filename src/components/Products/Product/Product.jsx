@@ -42,7 +42,7 @@ const Product = ({item, add}) => {
 console.log(item)
   return (
     <Grid item xs={12} md={6} lg={4}>
-    <Card className={classes.root}>
+    <Card elevation="8" className={classes.root}>
         <CardMedia
           className={classes.media}
           image={item.media.source}

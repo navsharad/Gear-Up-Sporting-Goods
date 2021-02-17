@@ -19,7 +19,7 @@ const Home = () => {
                 <div className="text">
                     <h1 className="title-text">Sporting Goods</h1>
                     <h2 className="subtitle-text">At An Affordable Price</h2>
-                    <p className="info-text">Sports can get expensive, here at simplicity we believe everyone should be able to afford equipment to play the sports they love. We offer sports equipment at amazing prices, all without sacrificing the quality!</p>
+                    <p className="info-text">Sports can get expensive, at Gear Up Sporting Goods we believe everyone should be able to afford equipment to play the sports they love. We offer sports equipment at amazing prices, all without sacrificing the quality!</p>
                     <Link to="/shop"><button className="shop-button">Shop Now</button></Link>
                 </div>
                 <div className="social-links">

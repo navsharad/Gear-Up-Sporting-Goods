@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       background: '#ffa3b1',
       width: '100vw',
+
     },
     appBar: {
       background: '#d48c97',
@@ -22,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   // fix prop drilling w/ context
 
 const Shop = ({products, add}) => {
+
+      // removes black background used for darker tint on video for home page
+      document.body.style = 'background-color: transparent';
+
     return (
         <Products products={products} add={add}/>
     )

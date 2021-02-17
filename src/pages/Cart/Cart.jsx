@@ -6,6 +6,14 @@ import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
+    root: {
+      width: '100wv',
+      height: '100vh',
+      alignItems: 'center',
+      background: '#C9D6FF',
+      background: '-webkit-linear-gradient(to right, #E2E2E2, #C9D6FF)',
+      background: 'linear-gradient(to right, #E2E2E2, #C9D6FF)',
+    },
     title: {
       marginTop: '5%',
     },
@@ -35,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Cart = ({cart, empty, update, remove}) => {
     const classes = useStyles();
+
+    // removes black background used for darker tint on video for home page
+    document.body.style = 'background-color: transparent';
 
     //this is just a function returning jsx
     const EmptyCart = () => (
@@ -67,7 +78,7 @@ const Cart = ({cart, empty, update, remove}) => {
     
 
     return (
-        <Container>
+        <Container className={classes.root}>
             <div className={classes.toolbar} />
             <Typography className={classes.title} variant="h3" gutterBottom>Your Shoppping Cart</Typography>
             {!cart.line_items.length ? <EmptyCart /> : <FilledCart />}
