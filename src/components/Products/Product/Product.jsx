@@ -12,9 +12,7 @@ import {Grid, IconButton} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 450,
-    padding: theme.spacing(2),
-    textAlign: 'center'
+    textAlign: 'center',
   },
   media: {
     height: 350,
@@ -39,10 +37,9 @@ const Product = ({item, add}) => {
   // strip html tags from api response
   const desc = item.description.replace(/(<([^>]+)>)/gi, "");
 
-console.log(item)
   return (
-    <Grid item xs={12} md={6} lg={4}>
-    <Card elevation="8" className={classes.root}>
+    <Grid item xs={12} md={6} lg={4} className={classes.root}>
+    <Card elevation="8" >
         <CardMedia
           className={classes.media}
           image={item.media.source}

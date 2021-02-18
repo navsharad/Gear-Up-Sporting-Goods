@@ -18,6 +18,10 @@ const useStyles = makeStyles(() => ({
       display: 'flex',
       alignItems: 'center',
     },
+    button: {
+      backgroundColor: 'red',
+      color: 'white',
+    }
   }));
 
 
@@ -37,7 +41,7 @@ const CartItem = ({item, remove, update}) => {
                   <Typography>{item.quantity}</Typography>
                   <Button type="button" size="small" onClick={() => update(item.id, item.quantity + 1)}>+</Button>
               </div>
-              <Button variant="contained" type="button" color="secondary" onClick={()=> remove(item.id)}>Remove</Button>
+              <Button className={classes.button} variant="contained" type="button" onClick={()=> remove(item.id)}>Remove</Button>
           </CardActions>
         </Card>
     )

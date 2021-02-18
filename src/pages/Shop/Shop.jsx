@@ -4,31 +4,30 @@ import Products from '../../components/Products/Products';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      background: '#ffa3b1',
-      width: '100vw',
-
-    },
-    appBar: {
-      background: '#d48c97',
-      height: '15vh',
-    },
-  
-    title: {
-      width: '90vw',
       display: 'flex',
-      justifyContent: 'space-between',
+      flexDirection: 'column',
+      width: '100wv',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: '#C9D6FF',
+      background: '-webkit-linear-gradient(to right, #E2E2E2, #C9D6FF)',
+      background: 'linear-gradient(to right, #E2E2E2, #C9D6FF)',
+
     },
   }));
 
   // fix prop drilling w/ context
 
 const Shop = ({products, add}) => {
+    const classes = useStyles();
 
       // removes black background used for darker tint on video for home page
       document.body.style = 'background-color: transparent';
 
     return (
-        <Products products={products} add={add}/>
+        <div className={classes.root}>
+          <Products products={products} add={add}/>
+        </div>
     )
 }
 

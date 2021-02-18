@@ -16,8 +16,11 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       marginTop: '5%',
+      justifySelf: 'center'
     },
-    emptyButton: {
+    button: {
+      backgroundColor: 'red',
+      color: 'white',
       minWidth: '150px',
       [theme.breakpoints.down('xs')]: {
         marginBottom: '5px',
@@ -27,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     checkoutButton: {
+      backgroundColor: 'DodgerBlue',
+      color: 'white',
       minWidth: '150px',
     },
     link: {
@@ -49,9 +54,7 @@ const Cart = ({cart, empty, update, remove}) => {
 
     //this is just a function returning jsx
     const EmptyCart = () => (
-        <Typography variant="subtitle1">You have no items in your cart
-        <Link to="/" className={classes.link}>Start adding some</Link>
-        </Typography>
+        <Link to="/shop" className={classes.link}><h1>No items in cart, click here to add some</h1></Link>
     )
 
     const FilledCart = () => (
@@ -68,8 +71,8 @@ const Cart = ({cart, empty, update, remove}) => {
                     subtotal: {cart.subtotal.formatted_with_symbol} 
                 </Typography>
                 <div>
-                    <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={empty}>Empty Cart</Button>
-                    <Button component={Link} to="/checkout" className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">Checkout</Button>
+                    <Button className={classes.button} size="large" type="button" variant="contained" onClick={empty}>Empty Cart</Button>
+                    <Button component={Link} to="/checkout" className={classes.checkoutButton} size="large" type="button" variant="contained">Checkout</Button>
                 </div>
             </div>
         </>
@@ -78,11 +81,13 @@ const Cart = ({cart, empty, update, remove}) => {
     
 
     return (
-        <Container className={classes.root}>
+      <div className={classes.root}>
+        <Container>
             <div className={classes.toolbar} />
             <Typography className={classes.title} variant="h3" gutterBottom>Your Shoppping Cart</Typography>
             {!cart.line_items.length ? <EmptyCart /> : <FilledCart />}
         </Container>
+        </div>
     )
 }
 
