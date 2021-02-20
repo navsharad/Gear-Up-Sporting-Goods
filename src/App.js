@@ -5,6 +5,7 @@ import Home from './pages/Home/Home';
 import Shop from './pages/Shop/Shop';
 import Cart from './pages/Cart/Cart';
 import Error from './pages/Error';
+import Checkout from './pages/Checkout';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import commerce from './lib/Commerce';
@@ -70,6 +71,10 @@ const App = () => {
                 update={updateCart}
                 empty={emptyCart}
             />
+        </Route>
+        <Route exact path="/checkout">
+            <Navbar items={cart.total_items}/>
+            <Checkout cart={cart}/>
         </Route>
         <Route path="*">
             <Error />
