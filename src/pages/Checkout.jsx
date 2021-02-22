@@ -1,9 +1,58 @@
-import { WhereToVote } from '@material-ui/icons';
 import React, {useState, useEffect} from 'react';
 import commerce from '../lib/Commerce';
+import {makeStyles} from '@material-ui/core/styles';
 
+const useStyles = makeStyles({
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100wv',
+        justifyContent: 'space-between',
+        textAlign: 'left',
+        alignItems: 'center',
+        background: '#C9D6FF',
+        background: '-webkit-linear-gradient(to right, #E2E2E2, #C9D6FF)',
+        background: 'linear-gradient(to right, #E2E2E2, #C9D6FF)',
+        height: '100vh',
+        width: '100vw',
+        paddingTop: '2%'
+  
+      },
+    title: {
+        fontSize: '2rem'
+    },
+    button: {
+        fontSize: '1.2rem',
+        padding: '15px',
+        width: '250px',
+        backgroundColor: 'transparent',
+        border: '2px solid rgb(101, 245, 221)',
+        outline: 'none',
+        borderRadius: '10px',
+        cursor: 'pointer',
+        transition: '0.3s ease-in-out',
+        '&:hover': {
+            letterSpacing: '5px',
+        }
+    },
+    fieldLabel: {
+        paddingRight: '10px',
+    },
+    inputBox: {
+        width: '200px',
+        padding: '5px',
+    }
+})
 const Checkout = ({cart}) => {
+    const classes = useStyles();
     const [checkoutToken, setCheckoutToken] = useState({});
+    const [countries, setCountries] = useState();
+    const [country, setCountry] = useState('US');
+    const [subdivisions, setSubdivisions] = useState();
+    const [subdivision, setSubdivision] = useState();
+    const [shippingOptions, setShippingOptions] = useState();
+    const [shippingOption, setShippingOption] = useState();
+
     const [userInfo, setUserInfo] = useState({
         // customer details
         firstName: 'Jane',
@@ -29,145 +78,125 @@ const Checkout = ({cart}) => {
         shippingOption: '',
     })
 
+
+
     // fetches the list of countries the product can ship to
     const fetchShippingCountries = async (checkoutTokenId) => {
-        const response = await commerce.services.localeListShippingCountries(checkoutTokenId);
-        setUserInfo(prevState => ({
-            ...prevState,
-            shippingCountries: response.countries
-        }));
-
+        if (cart.line_items.length) {
+            const response = await commerce.services.localeListShippingCountries(checkoutTokenId);
+            setCountries(response.countries);
+        }
     }
 
     // fetches subdivisions of the country
     const fetchSubdivisions = async (countryCode) => {
         const response = await commerce.services.localeListSubdivisions(countryCode);
-        setUserInfo(prevState => ({
-            ...prevState,
-            shippingSubdivisions: response.subdivisions
-        }));
+        setSubdivisions(response.subdivisions);
+        setSubdivision(Object.keys(response.subdivisions)[0]);
     }
 
     //fetches current shipping options offered by seller
-    const fetchShippingOptions = async (checkoutTokenId, country) => {
+    const fetchShippingOptions = async (checkoutTokenId, country, stateProvince) => {
         const response = await commerce.checkout.getShippingOptions(checkoutTokenId, {
-            country: country,
+            country,
             region: 'CA'
         });
-
-        const shippingOption = response[0] || null;
-        setUserInfo(prevState => ({
-            ...prevState,
-            shippingOptions: response,
-            shippingOption: shippingOption,
-        }));
+        setShippingOptions(response);
+        setShippingOption(response[0].id);
     }
 
-    // generates unique checkout token for transaction
+        // generates unique checkout token for transaction
     const generateCheckoutToken = async () => {
         if (cart.line_items.length) {
-            const response = await commerce.checkout.generateToken(cart.id, {type: 'cart'});
-            setCheckoutToken(response); 
+             const response = commerce.checkout.generateToken(cart.id, {type: 'cart'});
+             setCheckoutToken(response);
+             
         }
     }
 
+ 
+
     useEffect(() => {
         generateCheckoutToken();
-        fetchShippingCountries(checkoutToken.id);
-        fetchShippingOptions(checkoutToken.id, userInfo.shippingCountry);
+        if (checkoutToken.id) {
+            fetchShippingCountries(checkoutToken.id);
+        }
     }, [])
 
+    useEffect(() => {
+        if (checkoutToken.id) {
+            fetchShippingOptions(checkoutToken.id, country); // check this after eating
+        }
+    }, [country])
+
+
     return (
-        <form className="checkout__form">
-      <h4 className="checkout__subheading">Customer information</h4>
+        <form className={classes.root}>
+            
+      <h4 className={classes.title}>Customer information</h4>
 
-      <label className="checkout__label" htmlFor="firstName">First name</label>
-      <input className="checkout__input" type="text" value={userInfo.firstName} name="firstName" placeholder="Enter your first name" required />
+    <div>
+      <label className={classes.fieldLabel} htmlFor="firstName">First name</label>
+      <input className={classes.inputBox} type="text" value={userInfo.firstName} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))}name="firstName" placeholder="Enter your first name" required />
+    </div>
 
-      <label className="checkout__label" htmlFor="lastName">Last name</label>
-      <input className="checkout__input" type="text" value={userInfo.lastName}name="lastName" placeholder="Enter your last name" required />
+    <div>
+      <label className={classes.fieldLabel} htmlFor="lastName">Last name</label>
+      <input className={classes.inputBox} type="text" value={userInfo.lastName} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} name="lastName" placeholder="Enter your last name" required />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="email">Email</label>
+      <input className={classes.inputBox} type="text" value={userInfo.email} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} name="email" placeholder="Enter your email" required />
+      </div>
+      <h4 className={classes.title}>Shipping details</h4>
 
-      <label className="checkout__label" htmlFor="email">Email</label>
-      <input className="checkout__input" type="text" value={userInfo.email} name="email" placeholder="Enter your email" required />
+      <div>
+      <label className={classes.fieldLabel} htmlFor="shippingName">Full name</label>
+      <input className={classes.inputBox} type="text" value={userInfo.shippingName} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} name="shippingName" placeholder="Enter your shipping full name" required />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="shippingStreet">Street address</label>
+      <input className={classes.inputBox} type="text" value={userInfo.shippingStreet} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} name="shippingStreet" placeholder="Enter your street address" required />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="shippingCity">City</label>
+      <input className={classes.inputBox} type="text" value={userInfo.shippingCity} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} name="shippingCity" placeholder="Enter your city" required />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="shippingPostalZipCode">Postal/Zip code</label>
+      <input className={classes.inputBox} type="text" value={userInfo.shippingPostalZipCode} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} name="shippingPostalZipCode" placeholder="Enter your postal/zip code" required />
+      </div>
+      <label className={classes.fieldLabel} htmlFor="shippingCountry">Country</label>
+  
 
-      <h4 className="checkout__subheading">Shipping details</h4>
+        <label className={classes.fieldLabel} htmlFor="shippingStateProvince">State/province</label>
 
-      <label className="checkout__label" htmlFor="shippingName">Full name</label>
-      <input className="checkout__input" type="text" value={userInfo.shippingName} name="shippingName" placeholder="Enter your shipping full name" required />
 
-      <label className="checkout__label" htmlFor="shippingStreet">Street address</label>
-      <input className="checkout__input" type="text" value={userInfo.shippingStreet} name="shippingStreet" placeholder="Enter your street address" required />
-
-      <label className="checkout__label" htmlFor="shippingCity">City</label>
-      <input className="checkout__input" type="text" value={userInfo.shippingCity} name="shippingCity" placeholder="Enter your city" required />
-
-      <label className="checkout__label" htmlFor="shippingPostalZipCode">Postal/Zip code</label>
-      <input className="checkout__input" type="text" value={userInfo.shippingPostalZipCode} name="shippingPostalZipCode" placeholder="Enter your postal/zip code" required />
-
-      <label className="checkout__label" htmlFor="shippingCountry">Country</label>
-        <select
-        value={userInfo.shippingCountry}
-        name="shippingCountry"
-        className="checkout__select"
-        >
-        <option disabled>Country</option>
-        {
-            Object.keys(userInfo.shippingCountries).map((index) => {
-            return (
-                <option value={index} key={index}>{userInfo.shippingCountries[index]}</option>
-            )
-            })
-        };
-        </select>
-
-        <label className="checkout__label" htmlFor="shippingStateProvince">State/province</label>
-        <select 
-        value={userInfo.shippingStateProvince}
-        name="shippingStateProvince"
-        className="checkout__select"
-        >
-        <option className="checkout__option" disabled>State/province</option>
-        {
-            Object.keys(userInfo.shippingSubdivisions).map((index) => {
-            return (
-                <option value={index} key={index}>{userInfo.shippingSubdivisions[index]}</option>
-            );
-            })
-        };
-        </select>
-
-        <label className="checkout__label" htmlFor="shippingOption">Shipping method</label>
-        <select
-        value={userInfo.shippingOption.id}
-        name="shippingOption"
-        className="checkout__select"
-        >
-        <option className="checkout__select-option" disabled>Select a shipping method</option>
-        {
-            userInfo.shippingOptions.map((method, index) => {
-            return (
-                <option className="checkout__select-option" value={method.id} key={index}>{`${method.description} - $${method.price.formatted_with_code}` }</option>
-            );
-            })
-        };
-        </select>
+        <label className={classes.fieldLabel} htmlFor="shippingOption">Shipping method</label>
+  
 
 
       <h4 className="checkout__subheading">Payment information</h4>
 
-      <label className="checkout__label" htmlFor="cardNum">Credit card number</label>
-      <input className="checkout__input" type="text" name="cardNum" value={userInfo.cardNum} placeholder="Enter your card number" />
+      <div>
+      <label className={classes.fieldLabel} htmlFor="cardNum">Credit card number</label>
+      <input className={classes.inputBox} type="text" name="cardNum" value={userInfo.cardNum} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} placeholder="Enter your card number" />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="expMonth">Expiry month</label>
+      <input className={classes.inputBox} type="text" name="expMonth" value={userInfo.expMonth} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} placeholder="Card expiry month" />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="expYear">Expiry year</label>
+      <input className={classes.inputBox} type="text" name="expYear" value={userInfo.expYear} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} placeholder="Card expiry year" />
+      </div>
+      <div>
+      <label className={classes.fieldLabel} htmlFor="ccv">CCV</label>
+      <input className={classes.inputBox} type="text" name="ccv" value={userInfo.ccv} onChange={e => setUserInfo(prevState => ({...prevState, something : e.target.value}))} placeholder="CCV (3 digits)" />
+      </div>
+      <button className={classes.button}>Confirm order</button>
+      
 
-      <label className="checkout__label" htmlFor="expMonth">Expiry month</label>
-      <input className="checkout__input" type="text" name="expMonth" value={userInfo.expMonth} placeholder="Card expiry month" />
-
-      <label className="checkout__label" htmlFor="expYear">Expiry year</label>
-      <input className="checkout__input" type="text" name="expYear" value={userInfo.expYear} placeholder="Card expiry year" />
-
-      <label className="checkout__label" htmlFor="ccv">CCV</label>
-      <input className="checkout__input" type="text" name="ccv" value={userInfo.ccv} placeholder="CCV (3 digits)" />
-
-      <button className="checkout__btn-confirm">Confirm order</button>
     </form>
     )
 }

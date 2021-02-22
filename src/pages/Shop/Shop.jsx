@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
       background: '#C9D6FF',
       background: '-webkit-linear-gradient(to right, #E2E2E2, #C9D6FF)',
       background: 'linear-gradient(to right, #E2E2E2, #C9D6FF)',
-
+      height: '100%'
     },
   }));
 

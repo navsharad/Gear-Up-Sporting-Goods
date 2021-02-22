@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   appBar: {
-    background: 'lightblue',
+    background: 'black',
     height: '14vh',
   },
 

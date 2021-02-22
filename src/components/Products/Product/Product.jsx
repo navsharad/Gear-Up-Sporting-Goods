@@ -39,7 +39,7 @@ const Product = ({item, add}) => {
 
   return (
     <Grid item xs={12} md={6} lg={4} className={classes.root}>
-    <Card elevation="8" >
+    <Card elevation={8} >
         <CardMedia
           className={classes.media}
           image={item.media.source}
