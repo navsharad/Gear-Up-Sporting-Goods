@@ -13,9 +13,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: '#ffa3b1',
     width: '100%',
+    borderBottom: '3px solid dodgerblue',
   },
   appBar: {
-    background: 'black',
+    background: 'navy',
     height: '14vh',
   },
 
